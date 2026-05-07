@@ -3,12 +3,10 @@ export interface HeroContent {
   description: string;
   primaryCta: string;
   secondaryNote: string;
-  auditPanelCopy: string;
 }
 
 export interface BrandContent {
-  wordmark: string;
-  legalSuffix: string;
+  name: string;
   audience: string;
 }
 
