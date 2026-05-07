@@ -181,7 +181,7 @@ const auditOverview = app.querySelector<HTMLElement>('#audit-overview');
 const auditOverviewHeading = app.querySelector<HTMLHeadingElement>('.hero__panel-title');
 
 if (!auditCtaButtons.length || !auditOverview || !auditOverviewHeading) {
-  throw new Error('Missing hero CTA or audit overview panel focus target');
+  throw new Error('Missing CTA buttons or audit overview panel focus target');
 }
 
 const handleAuditCtaClick = () => {
