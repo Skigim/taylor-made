@@ -3,23 +3,30 @@ import { expect, test } from '@playwright/test';
 test('homepage shows the approved hero content', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByText(/taylormade llc/i)).toBeVisible();
+  await expect(page.locator('.hero__brand')).toHaveAttribute('aria-label', /taylormade llc/i);
 
   await expect(
     page.getByRole('heading', {
-      name: /modern infrastructure for service businesses that deserve better systems/i,
+      name: /modern infrastructure/i,
     })
   ).toBeVisible();
 
-  await expect(
-    page.getByText(/web presence, online booking, billing, reminders, and customer flow/i)
-  ).toBeVisible();
+  await expect(page.getByText(/web presence, online booking, billing/i)).toBeVisible();
 
   await expect(page.getByText(/salon and barber focus/i)).toBeVisible();
 
-  await expect(
-    page.getByRole('button', { name: /get a free systems audit/i })
-  ).toBeVisible();
+  const primaryCta = page.getByRole('link', { name: /get a free systems audit/i });
+  await expect(primaryCta).toBeVisible();
+  await expect(primaryCta).toHaveAttribute('href', '#audit-overview');
+});
+
+test('primary CTA jumps to the audit overview panel', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('link', { name: /get a free systems audit/i }).click();
+
+  await expect(page).toHaveURL(/#audit-overview$/);
+  await expect(page.locator('#audit-overview')).toBeVisible();
 });
 
 test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {

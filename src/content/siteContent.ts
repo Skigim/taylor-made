@@ -2,7 +2,8 @@ import type { LandingPageContent } from '../types/content';
 
 export const siteContent: LandingPageContent = {
   brand: {
-    name: 'TaylorMade LLC',
+    wordmark: 'TaylorMade',
+    legalSuffix: 'LLC',
     audience: 'Salon and barber focus',
   },
   hero: {

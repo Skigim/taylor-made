@@ -50,6 +50,41 @@ body {
   font-size: 0.75rem;
 }
 
+.hero__brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin: 0 0 1.5rem;
+  color: #f8f3ea;
+}
+
+.hero__brand::after {
+  content: '';
+  width: 3.5rem;
+  height: 1px;
+  margin-left: 0.5rem;
+  background: color-mix(in srgb, var(--color-accent) 78%, white);
+}
+
+.hero__brand-mark,
+.hero__brand-suffix {
+  display: inline-block;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.hero__brand-mark {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  letter-spacing: 0.02em;
+}
+
+.hero__brand-suffix {
+  color: color-mix(in srgb, var(--color-accent) 85%, white);
+  font-size: 0.82rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
 h1 {
   margin: 0;
   max-width: 11ch;
@@ -65,28 +100,81 @@ h1 {
   line-height: 1.7;
 }
 
+.hero__description {
+  max-width: 34rem;
+}
+
 .hero__actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
   margin-top: 2rem;
 }
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   font: inherit;
 }
 
 .button--primary {
   border: 0;
+  min-height: 3.5rem;
   padding: 1rem 1.5rem;
   color: var(--color-ink);
   background: var(--color-accent);
   font-weight: 700;
 }
 
+.hero__note {
+  max-width: 18rem;
+  color: color-mix(in srgb, #f8f3ea 82%, transparent);
+}
+
+.hero__panel-kicker {
+  margin: 0 0 1rem;
+  color: var(--color-ink-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero__panel-copy {
+  margin: 0;
+  max-width: 24rem;
+  color: var(--color-text);
+}
+
 @media (max-width: 720px) {
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
+  }
+
+  .hero__content,
+  .hero__panel {
+    padding: 2rem 1.25rem;
+  }
+
+  .hero__brand {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hero__brand::after {
+    width: 2.5rem;
+    margin-left: 0;
+  }
+
+  .hero__actions {
+    align-items: flex-start;
+  }
+
+  .button--primary {
+    width: 100%;
   }
 }
