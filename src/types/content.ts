@@ -6,7 +6,8 @@ export interface HeroContent {
 }
 
 export interface BrandContent {
-  name: string;
+  wordmark: string;
+  legalSuffix?: string;
   audience: string;
 }
 

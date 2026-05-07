@@ -22,9 +22,55 @@ test('homepage shows the approved hero content', async ({ page }) => {
 
   const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
   await expect(primaryCta).toBeVisible();
+});
+
+test('hero CTA focuses the audit overview without desktop scroll jumps', async ({ page }) => {
+  await page.goto('/');
+
+  const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
+  const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
+  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
+  const viewportHeight = page.viewportSize()?.height ?? 0;
+  const panelBefore = await auditOverview.boundingBox();
+
+  expect(panelBefore).not.toBeNull();
 
   await primaryCta.click();
-  await expect(page.getByTestId('audit-overview')).toBeFocused();
+
+  await expect(auditOverviewHeading).toBeFocused();
+
+  if (!panelBefore) {
+    throw new Error('Expected audit overview panel bounding box');
+  }
+
+  expect(panelBefore.y).toBeLessThan(viewportHeight);
+  await expect
+    .poll(async () => page.evaluate(() => window.scrollY))
+    .toBe(0);
+});
+
+test('hero CTA scrolls the audit overview into view on narrow screens before focusing it', async ({ page }) => {
+  await page.setViewportSize({ width: 640, height: 540 });
+  await page.goto('/');
+
+  const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
+  const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
+  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
+  const viewportHeight = page.viewportSize()?.height ?? 0;
+  const panelBefore = await auditOverview.boundingBox();
+
+  expect(panelBefore).not.toBeNull();
+
+  if (!panelBefore) {
+    throw new Error('Expected audit overview panel bounding box');
+  }
+
+  expect(panelBefore.y).toBeGreaterThanOrEqual(viewportHeight);
+
+  await primaryCta.click();
+
+  await expect(auditOverviewHeading).toBeFocused();
+  await expect(auditOverview).toBeInViewport();
 });
 
 test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {

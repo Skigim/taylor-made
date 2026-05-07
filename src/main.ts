@@ -9,16 +9,28 @@ if (!app) {
   throw new Error('Missing #app root element');
 }
 
-const brandNameMatch = /^(.*?)(\s+LLC)$/.exec(siteContent.brand.name);
-const brandWordmark = brandNameMatch?.[1] ?? siteContent.brand.name;
-const brandSuffix = brandNameMatch?.[2].trim() ?? '';
+const brandSuffix = siteContent.brand.legalSuffix?.trim() ?? '';
+
+const isMeaningfullyVisible = (element: HTMLElement) => {
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+
+  if (visibleHeight <= 0 || visibleWidth <= 0) {
+    return false;
+  }
+
+  return visibleHeight >= rect.height * 0.6;
+};
 
 app.innerHTML = `
   <main class="page-shell">
     <section class="hero">
       <div class="hero__content">
         <p class="hero__brand">
-          <span class="hero__brand-mark">${brandWordmark}</span>
+          <span class="hero__brand-mark">${siteContent.brand.wordmark}</span>
           ${brandSuffix ? `<span class="hero__brand-suffix">${brandSuffix}</span>` : ''}
         </p>
         <h1>${siteContent.hero.title}</h1>
@@ -39,9 +51,8 @@ app.innerHTML = `
         class="hero__panel"
         id="audit-overview"
         aria-label="Audit overview"
-        tabindex="-1"
-        data-testid="audit-overview"
       >
+        <h2 class="hero__panel-title" tabindex="-1">Audit overview</h2>
         <p class="hero__panel-kicker">${siteContent.brand.audience}</p>
         <p class="hero__panel-copy">${auditPanelCopy}</p>
       </aside>
@@ -51,11 +62,20 @@ app.innerHTML = `
 
 const primaryCta = app.querySelector<HTMLButtonElement>('[data-action="focus-audit-overview"]');
 const auditOverview = app.querySelector<HTMLElement>('#audit-overview');
+const auditOverviewHeading = app.querySelector<HTMLHeadingElement>('.hero__panel-title');
 
-if (!primaryCta || !auditOverview) {
-  throw new Error('Missing hero CTA or audit overview panel');
+if (!primaryCta || !auditOverview || !auditOverviewHeading) {
+  throw new Error('Missing hero CTA or audit overview panel focus target');
 }
 
 primaryCta.addEventListener('click', () => {
-  auditOverview.focus({ preventScroll: true });
+  const shouldScrollIntoView = !isMeaningfullyVisible(auditOverview);
+
+  if (shouldScrollIntoView) {
+    auditOverview.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    auditOverviewHeading.focus();
+    return;
+  }
+
+  auditOverviewHeading.focus({ preventScroll: true });
 });
