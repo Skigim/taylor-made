@@ -117,24 +117,30 @@ test('hero CTA scrolls the audit overview into view on narrow screens before foc
 test('homepage shows the process section with numbered steps', async ({ page }) => {
   await page.goto('/');
 
+  const processSection = page.locator('section[aria-labelledby="process-title"]');
+
   await expect(
-    page.getByRole('heading', { name: /how it works/i })
+    processSection.getByRole('heading', { name: /how it works/i })
   ).toBeVisible();
 
-  await expect(page.getByText(/audit/i).first()).toBeVisible();
-  await expect(page.getByText(/plan/i).first()).toBeVisible();
-  await expect(page.getByText(/build/i).first()).toBeVisible();
-  await expect(page.getByText(/support/i).first()).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^audit$/i })).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^plan$/i })).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^build$/i })).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^support$/i })).toBeVisible();
 });
 
 test('homepage shows a closing CTA section', async ({ page }) => {
   await page.goto('/');
 
+  const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
+
   await expect(
-    page.getByRole('heading', { name: /ready to stop patching and start building/i })
+    ctaSection.getByRole('heading', { name: /ready to stop patching and start building/i })
   ).toBeVisible();
 
-  const closingCtaButton = page.getByRole('button', { name: /book your free audit/i });
+  await expect(ctaSection.getByText(/the audit is free/i)).toBeVisible();
+
+  const closingCtaButton = ctaSection.getByRole('button', { name: /book your free audit/i });
   await expect(closingCtaButton).toBeVisible();
 });
 

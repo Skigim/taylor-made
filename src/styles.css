@@ -3,6 +3,7 @@
   --color-ink-soft: #274150;
   --color-paper: #f5efe3;
   --color-paper-strong: #eadfca;
+  --color-parchment: #f8f3ea;
   --color-text: #162028;
   --color-muted: #5f6d74;
   --color-accent: #d4af37;
@@ -39,7 +40,7 @@ h2,
 
 .hero__content {
   padding: 4rem 3rem;
-  color: #f8f3ea;
+  color: var(--color-parchment);
   background: linear-gradient(160deg, var(--color-ink) 0%, var(--color-ink-soft) 100%);
 }
 
@@ -67,7 +68,7 @@ h2,
   align-items: baseline;
   gap: 0.65rem;
   margin: 0 0 1.5rem;
-  color: #f8f3ea;
+  color: var(--color-parchment);
 }
 
 .hero__brand::after {
@@ -143,7 +144,7 @@ h1 {
 
 .hero__note {
   max-width: 18rem;
-  color: color-mix(in srgb, #f8f3ea 82%, transparent);
+  color: color-mix(in srgb, var(--color-parchment) 82%, transparent);
 }
 
 .hero__panel-kicker {
@@ -173,7 +174,7 @@ h1 {
 }
 
 .section--paper {
-  background: #f8f3ea;
+  background: var(--color-parchment);
 }
 
 .section--split {
@@ -286,7 +287,7 @@ h1 {
 
 .section--process {
   background: var(--color-ink);
-  color: #f8f3ea;
+  color: var(--color-parchment);
 }
 
 .section--process .eyebrow {
@@ -294,7 +295,7 @@ h1 {
 }
 
 .section--process .section__intro h2 {
-  color: #f8f3ea;
+  color: var(--color-parchment);
 }
 
 .process-list {
@@ -322,12 +323,12 @@ h1 {
   font-family: var(--font-display);
   font-size: 1.35rem;
   line-height: 1.1;
-  color: #f8f3ea;
+  color: var(--color-parchment);
 }
 
 .process-step__description {
   margin: 0;
-  color: color-mix(in srgb, #f8f3ea 72%, transparent);
+  color: color-mix(in srgb, var(--color-parchment) 72%, transparent);
   font-size: 0.95rem;
   line-height: 1.7;
 }
