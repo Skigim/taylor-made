@@ -309,7 +309,7 @@ h1 {
 
 .process-step {
   padding: 1.5rem 1.25rem;
-  border: 1px solid rgba(248, 243, 234, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-parchment) 10%, transparent);
   display: grid;
   gap: 0.6rem;
 }
