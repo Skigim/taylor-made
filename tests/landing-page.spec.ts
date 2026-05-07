@@ -21,3 +21,17 @@ test('homepage shows the approved hero content', async ({ page }) => {
     page.getByRole('button', { name: /get a free systems audit/i })
   ).toBeVisible();
 });
+
+test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {
+  await page.setViewportSize({ width: 640, height: 960 });
+  await page.goto('/');
+
+  const heroContent = page.locator('.hero__content');
+  const heroPanel = page.locator('.hero__panel');
+  const contentBox = await heroContent.boundingBox();
+  const panelBox = await heroPanel.boundingBox();
+
+  expect(contentBox).not.toBeNull();
+  expect(panelBox).not.toBeNull();
+  expect(panelBox!.y).toBeGreaterThan(contentBox!.y + 1);
+});

@@ -21,9 +21,7 @@ app.innerHTML = `
       </div>
       <aside class="hero__panel" aria-label="Audit overview">
         <p class="eyebrow">${siteContent.brand.audience}</p>
-        <p class="hero__panel-copy">
-          The audit identifies what is working, what is costing time, and what to fix first.
-        </p>
+        <p class="hero__panel-copy">${siteContent.hero.auditPanelCopy}</p>
       </aside>
     </section>
   </main>

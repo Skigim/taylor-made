@@ -83,3 +83,10 @@ h1 {
   background: var(--color-accent);
   font-weight: 700;
 }
+
+@media (max-width: 720px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+}

@@ -11,5 +11,7 @@ export const siteContent: LandingPageContent = {
       'Web presence, online booking, billing, reminders, and customer flow designed around how your shop actually runs.',
     primaryCta: 'Get a free systems audit',
     secondaryNote: 'For appointment-based local businesses',
+    auditPanelCopy:
+      'The audit identifies what is working, what is costing time, and what to fix first.',
   },
 };
