@@ -35,4 +35,32 @@ export const siteContent: LandingPageContent = {
       description: 'Rebooking prompts, follow-up systems, and customer touchpoints.',
     },
   ],
+  process: [
+    {
+      title: 'Audit',
+      description:
+        'A free review of your current presence, booking flow, and day-to-day operations — no pressure, no pitch.',
+    },
+    {
+      title: 'Plan',
+      description:
+        'A plain-English roadmap showing exactly what to fix first and why, based on your actual shop.',
+    },
+    {
+      title: 'Build',
+      description:
+        'We implement the changes for you — site, booking, billing, reminders, and everything in between.',
+    },
+    {
+      title: 'Support',
+      description:
+        'Ongoing check-ins so your systems keep working as your business grows.',
+    },
+  ],
+  closingCta: {
+    title: 'Ready to stop patching and start building?',
+    description:
+      'The audit is free, the roadmap is yours to keep, and there is no obligation. Most shops see the first win within two weeks.',
+    cta: 'Book your free audit',
+  },
 };

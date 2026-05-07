@@ -114,6 +114,48 @@ test('hero CTA scrolls the audit overview into view on narrow screens before foc
   await expect(auditOverview).toBeInViewport();
 });
 
+test('homepage shows the process section with numbered steps', async ({ page }) => {
+  await page.goto('/');
+
+  const processSection = page.locator('section[aria-labelledby="process-title"]');
+
+  await expect(
+    processSection.getByRole('heading', { name: /how it works/i })
+  ).toBeVisible();
+
+  await expect(processSection.getByRole('heading', { name: /^audit$/i })).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^plan$/i })).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^build$/i })).toBeVisible();
+  await expect(processSection.getByRole('heading', { name: /^support$/i })).toBeVisible();
+});
+
+test('homepage shows a closing CTA section', async ({ page }) => {
+  await page.goto('/');
+
+  const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
+
+  await expect(
+    ctaSection.getByRole('heading', { name: /ready to stop patching and start building/i })
+  ).toBeVisible();
+
+  await expect(ctaSection.getByText(/the audit is free/i)).toBeVisible();
+
+  const closingCtaButton = ctaSection.getByRole('button', { name: /book your free audit/i });
+  await expect(closingCtaButton).toBeVisible();
+});
+
+test('closing CTA focuses the audit overview heading', async ({ page }) => {
+  await page.goto('/');
+
+  const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
+  const closingCtaButton = ctaSection.getByRole('button', { name: /book your free audit/i });
+  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
+
+  await closingCtaButton.click();
+
+  await expect(auditOverviewHeading).toBeFocused();
+});
+
 test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {
   await page.setViewportSize({ width: 640, height: 960 });
   await page.goto('/');
