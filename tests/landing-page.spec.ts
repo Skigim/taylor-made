@@ -32,6 +32,7 @@ test('hero CTA focuses the audit overview without desktop scroll jumps', async (
   const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
   const viewportHeight = page.viewportSize()?.height ?? 0;
   const panelBefore = await auditOverview.boundingBox();
+  const scrollBefore = await page.evaluate(() => window.scrollY);
 
   expect(panelBefore).not.toBeNull();
 
@@ -46,7 +47,7 @@ test('hero CTA focuses the audit overview without desktop scroll jumps', async (
   expect(panelBefore.y).toBeLessThan(viewportHeight);
   await expect
     .poll(async () => page.evaluate(() => window.scrollY))
-    .toBe(0);
+    .toBe(scrollBefore);
 });
 
 test('hero CTA scrolls the audit overview into view on narrow screens before focusing it', async ({ page }) => {

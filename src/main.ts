@@ -9,12 +9,24 @@ if (!app) {
   throw new Error('Missing #app root element');
 }
 
-const brandName = siteContent.brand.name.trim();
-const brandNameParts = brandName.split(/\s+/);
-const brandSuffix = brandNameParts.length > 1 ? brandNameParts.at(-1) ?? '' : '';
-const brandWordmark = brandSuffix
-  ? brandName.slice(0, -brandSuffix.length).trimEnd()
-  : brandName;
+const splitBrandName = (brandName: string) => {
+  const normalizedBrandName = brandName.trim();
+  const lastSpaceIndex = normalizedBrandName.lastIndexOf(' ');
+
+  if (lastSpaceIndex < 0) {
+    return {
+      brandWordmark: normalizedBrandName,
+      brandSuffix: '',
+    };
+  }
+
+  return {
+    brandWordmark: normalizedBrandName.slice(0, lastSpaceIndex),
+    brandSuffix: normalizedBrandName.slice(lastSpaceIndex + 1),
+  };
+};
+
+const { brandWordmark, brandSuffix } = splitBrandName(siteContent.brand.name);
 
 const isMeaningfullyVisible = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect();
