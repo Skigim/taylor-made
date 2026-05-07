@@ -164,22 +164,27 @@ app.innerHTML = `
     <section class="section section--cta" aria-labelledby="closing-cta-title">
       <h2 id="closing-cta-title">${siteContent.closingCta.title}</h2>
       <p class="cta-section__description">${siteContent.closingCta.description}</p>
-      <button class="button button--primary" type="button">
+      <button
+        class="button button--primary"
+        type="button"
+        aria-controls="audit-overview"
+        data-action="focus-audit-overview"
+      >
         ${siteContent.closingCta.cta}
       </button>
     </section>
   </main>
 `;
 
-const primaryCta = app.querySelector<HTMLButtonElement>('[data-action="focus-audit-overview"]');
+const auditCtaButtons = app.querySelectorAll<HTMLButtonElement>('[data-action="focus-audit-overview"]');
 const auditOverview = app.querySelector<HTMLElement>('#audit-overview');
 const auditOverviewHeading = app.querySelector<HTMLHeadingElement>('.hero__panel-title');
 
-if (!primaryCta || !auditOverview || !auditOverviewHeading) {
+if (!auditCtaButtons.length || !auditOverview || !auditOverviewHeading) {
   throw new Error('Missing hero CTA or audit overview panel focus target');
 }
 
-primaryCta.addEventListener('click', () => {
+const handleAuditCtaClick = () => {
   const shouldScrollIntoView = !isMeaningfullyVisible(auditOverview);
 
   if (shouldScrollIntoView) {
@@ -189,4 +194,6 @@ primaryCta.addEventListener('click', () => {
   }
 
   auditOverviewHeading.focus({ preventScroll: true });
-});
+};
+
+auditCtaButtons.forEach((btn) => btn.addEventListener('click', handleAuditCtaClick));

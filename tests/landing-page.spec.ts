@@ -144,6 +144,18 @@ test('homepage shows a closing CTA section', async ({ page }) => {
   await expect(closingCtaButton).toBeVisible();
 });
 
+test('closing CTA focuses the audit overview heading', async ({ page }) => {
+  await page.goto('/');
+
+  const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
+  const closingCtaButton = ctaSection.getByRole('button', { name: /book your free audit/i });
+  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
+
+  await closingCtaButton.click();
+
+  await expect(auditOverviewHeading).toBeFocused();
+});
+
 test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {
   await page.setViewportSize({ width: 640, height: 960 });
   await page.goto('/');
