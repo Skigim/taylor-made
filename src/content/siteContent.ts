@@ -12,4 +12,27 @@ export const siteContent: LandingPageContent = {
     primaryCta: 'Get a free systems audit',
     secondaryNote: 'For appointment-based local businesses',
   },
+  auditScope: ['Online presence', 'Scheduling flow', 'Payments and operations'],
+  problem: {
+    title: 'Most local shops are running real businesses on a stack of disconnected fixes.',
+    points: [
+      'Missed calls become missed bookings.',
+      'Clients face inconsistent websites and booking tools.',
+      'Reminders, intake, billing, and follow-up stay manual.',
+    ],
+  },
+  capabilities: [
+    {
+      name: 'Presence',
+      description: 'Sites, listings, messaging, and visual trust signals.',
+    },
+    {
+      name: 'Operations',
+      description: 'Scheduling, reminders, intake, billing, and workflow cleanup.',
+    },
+    {
+      name: 'Retention',
+      description: 'Rebooking prompts, follow-up systems, and customer touchpoints.',
+    },
+  ],
 };

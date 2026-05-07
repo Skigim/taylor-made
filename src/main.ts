@@ -35,6 +35,33 @@ const splitBrandName = (brandName: string) => {
 
 const { brandWordmark, brandSuffix } = splitBrandName(siteContent.brand.name);
 
+const scopeItems = siteContent.auditScope
+  .map((item) => `<li class="scope-list__item">${item}</li>`)
+  .join('');
+
+const problemItems = siteContent.problem.points
+  .map(
+    (point, index) => `
+      <li class="problem-list__item">
+        <span>${point}</span>
+        <span class="problem-list__index">${String(index + 1).padStart(2, '0')}</span>
+      </li>
+    `
+  )
+  .join('');
+
+const capabilityItems = siteContent.capabilities
+  .map(
+    ({ name, description }, index) => `
+      <article class="capability-card">
+        <p class="eyebrow capability-card__index">${String(index + 1).padStart(2, '0')}</p>
+        <h3>${name}</h3>
+        <p>${description}</p>
+      </article>
+    `
+  )
+  .join('');
+
 const isMeaningfullyVisible = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -80,6 +107,36 @@ app.innerHTML = `
         <p class="hero__panel-kicker">${siteContent.brand.audience}</p>
         <p class="hero__panel-copy">${auditPanelCopy}</p>
       </aside>
+    </section>
+
+    <section class="section section--paper" aria-labelledby="audit-scope-title">
+      <div class="section__intro">
+        <p class="eyebrow">Audit scope</p>
+        <h2 id="audit-scope-title">What the review covers</h2>
+      </div>
+      <ul class="scope-list">
+        ${scopeItems}
+      </ul>
+    </section>
+
+    <section class="section section--split" aria-labelledby="problem-title">
+      <div class="section__content-block">
+        <p class="eyebrow">The problem</p>
+        <h2 id="problem-title">${siteContent.problem.title}</h2>
+      </div>
+      <ol class="problem-list">
+        ${problemItems}
+      </ol>
+    </section>
+
+    <section class="section section--paper" aria-labelledby="capabilities-title">
+      <div class="section__intro">
+        <p class="eyebrow">Capabilities</p>
+        <h2 id="capabilities-title">What TaylorMade builds and improves</h2>
+      </div>
+      <div class="capability-grid">
+        ${capabilityItems}
+      </div>
     </section>
   </main>
 `;

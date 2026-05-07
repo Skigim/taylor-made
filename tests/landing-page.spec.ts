@@ -46,6 +46,24 @@ test('homepage shows the approved hero content', async ({ page }) => {
   await expect(primaryCta).toBeVisible();
 });
 
+test('homepage explains the audit scope and service capabilities', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByText(/online presence/i)).toBeVisible();
+  await expect(page.getByText(/scheduling flow/i)).toBeVisible();
+  await expect(page.getByText(/payments and operations/i)).toBeVisible();
+
+  await expect(
+    page.getByRole('heading', {
+      name: /most local shops are running real businesses on a stack of disconnected fixes/i,
+    })
+  ).toBeVisible();
+
+  await expect(page.getByText(/^presence$/i)).toBeVisible();
+  await expect(page.getByText(/^operations$/i)).toBeVisible();
+  await expect(page.getByText(/^retention$/i)).toBeVisible();
+});
+
 test('hero CTA focuses the audit overview without desktop scroll jumps', async ({ page }) => {
   await page.goto('/');
 

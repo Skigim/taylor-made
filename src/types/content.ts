@@ -10,7 +10,20 @@ export interface BrandContent {
   audience: string;
 }
 
+export interface Capability {
+  name: string;
+  description: string;
+}
+
+export interface ProblemContent {
+  title: string;
+  points: string[];
+}
+
 export interface LandingPageContent {
   brand: BrandContent;
   hero: HeroContent;
+  auditScope: string[];
+  problem: ProblemContent;
+  capabilities: Capability[];
 }
