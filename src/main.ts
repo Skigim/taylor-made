@@ -62,6 +62,18 @@ const capabilityItems = siteContent.capabilities
   )
   .join('');
 
+const processSteps = siteContent.process
+  .map(
+    ({ title, description }, index) => `
+      <li class="process-step">
+        <p class="eyebrow process-step__index">${String(index + 1).padStart(2, '0')}</p>
+        <h3 class="process-step__title">${title}</h3>
+        <p class="process-step__description">${description}</p>
+      </li>
+    `
+  )
+  .join('');
+
 const isMeaningfullyVisible = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -137,6 +149,24 @@ app.innerHTML = `
       <div class="capability-grid">
         ${capabilityItems}
       </div>
+    </section>
+
+    <section class="section section--process" aria-labelledby="process-title">
+      <div class="section__intro">
+        <p class="eyebrow">The process</p>
+        <h2 id="process-title">How it works</h2>
+      </div>
+      <ol class="process-list">
+        ${processSteps}
+      </ol>
+    </section>
+
+    <section class="section section--cta" aria-labelledby="closing-cta-title">
+      <h2 id="closing-cta-title">${siteContent.closingCta.title}</h2>
+      <p class="cta-section__description">${siteContent.closingCta.description}</p>
+      <button class="button button--primary" type="button">
+        ${siteContent.closingCta.cta}
+      </button>
     </section>
   </main>
 `;

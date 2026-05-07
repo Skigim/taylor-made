@@ -114,6 +114,30 @@ test('hero CTA scrolls the audit overview into view on narrow screens before foc
   await expect(auditOverview).toBeInViewport();
 });
 
+test('homepage shows the process section with numbered steps', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(
+    page.getByRole('heading', { name: /how it works/i })
+  ).toBeVisible();
+
+  await expect(page.getByText(/audit/i).first()).toBeVisible();
+  await expect(page.getByText(/plan/i).first()).toBeVisible();
+  await expect(page.getByText(/build/i).first()).toBeVisible();
+  await expect(page.getByText(/support/i).first()).toBeVisible();
+});
+
+test('homepage shows a closing CTA section', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(
+    page.getByRole('heading', { name: /ready to stop patching and start building/i })
+  ).toBeVisible();
+
+  const closingCtaButton = page.getByRole('button', { name: /book your free audit/i });
+  await expect(closingCtaButton).toBeVisible();
+});
+
 test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {
   await page.setViewportSize({ width: 640, height: 960 });
   await page.goto('/');

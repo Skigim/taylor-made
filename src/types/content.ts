@@ -20,10 +20,23 @@ export interface ProblemContent {
   points: string[];
 }
 
+export interface ProcessStep {
+  title: string;
+  description: string;
+}
+
+export interface ClosingCta {
+  title: string;
+  description: string;
+  cta: string;
+}
+
 export interface LandingPageContent {
   brand: BrandContent;
   hero: HeroContent;
   auditScope: string[];
   problem: ProblemContent;
   capabilities: Capability[];
+  process: ProcessStep[];
+  closingCta: ClosingCta;
 }
