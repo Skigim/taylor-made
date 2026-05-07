@@ -1,5 +1,27 @@
 import { expect, test } from '@playwright/test';
 
+const MAX_DESKTOP_SCROLL_DRIFT = 24;
+
+test('homepage uses bundled hero fonts without remote requests', async ({ page }) => {
+  const remoteFontRequests: string[] = [];
+
+  page.on('request', (request) => {
+    if (/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//i.test(request.url())) {
+      remoteFontRequests.push(request.url());
+    }
+  });
+
+  await page.goto('/');
+
+  await expect(
+    page.getByRole('heading', {
+      name: /modern infrastructure for service businesses that deserve better systems/i,
+    })
+  ).toBeVisible();
+
+  expect(remoteFontRequests).toEqual([]);
+});
+
 test('homepage shows the approved hero content', async ({ page }) => {
   await page.goto('/');
 
@@ -30,7 +52,6 @@ test('hero CTA focuses the audit overview without desktop scroll jumps', async (
   const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
   const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
   const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
-  const maxDesktopScrollDrift = 24;
   const viewportHeight = page.viewportSize()?.height ?? 0;
   const panelBefore = await auditOverview.boundingBox();
   const scrollBefore = await page.evaluate(() => window.scrollY);
@@ -48,7 +69,7 @@ test('hero CTA focuses the audit overview without desktop scroll jumps', async (
   expect(panelBefore.y).toBeLessThan(viewportHeight);
   await expect
     .poll(async () => Math.abs((await page.evaluate(() => window.scrollY)) - scrollBefore))
-    .toBeLessThanOrEqual(maxDesktopScrollDrift);
+    .toBeLessThanOrEqual(MAX_DESKTOP_SCROLL_DRIFT);
 });
 
 test('hero CTA scrolls the audit overview into view on narrow screens before focusing it', async ({ page }) => {

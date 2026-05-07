@@ -13,5 +13,9 @@
     "@playwright/test": "^1.54.0",
     "typescript": "^5.8.3",
     "vite": "^7.0.0"
+  },
+  "dependencies": {
+    "@fontsource/manrope": "^5.2.8",
+    "@fontsource/playfair-display": "^5.2.8"
   }
 }
