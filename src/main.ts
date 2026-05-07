@@ -9,7 +9,12 @@ if (!app) {
   throw new Error('Missing #app root element');
 }
 
-const brandSuffix = siteContent.brand.legalSuffix?.trim() ?? '';
+const brandName = siteContent.brand.name.trim();
+const brandNameParts = brandName.split(/\s+/);
+const brandSuffix = brandNameParts.length > 1 ? brandNameParts.at(-1) ?? '' : '';
+const brandWordmark = brandSuffix
+  ? brandName.slice(0, -brandSuffix.length).trimEnd()
+  : brandName;
 
 const isMeaningfullyVisible = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect();
@@ -30,7 +35,7 @@ app.innerHTML = `
     <section class="hero">
       <div class="hero__content">
         <p class="hero__brand">
-          <span class="hero__brand-mark">${siteContent.brand.wordmark}</span>
+          <span class="hero__brand-mark">${brandWordmark}</span>
           ${brandSuffix ? `<span class="hero__brand-suffix">${brandSuffix}</span>` : ''}
         </p>
         <h1>${siteContent.hero.title}</h1>
