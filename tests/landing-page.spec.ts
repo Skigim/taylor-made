@@ -1,12 +1,14 @@
 import { expect, test } from '@playwright/test';
 
+import { isRemoteGoogleFontRequest } from '../src/lib/html';
+
 const MAX_DESKTOP_SCROLL_DRIFT = 24;
 
 test('homepage uses bundled hero fonts without remote requests', async ({ page }) => {
   const remoteFontRequests: string[] = [];
 
   page.on('request', (request) => {
-    if (/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//i.test(request.url())) {
+    if (isRemoteGoogleFontRequest(request.url())) {
       remoteFontRequests.push(request.url());
     }
   });
@@ -18,6 +20,9 @@ test('homepage uses bundled hero fonts without remote requests', async ({ page }
       name: /modern infrastructure for service businesses that deserve better systems/i,
     })
   ).toBeVisible();
+
+  await page.waitForLoadState('networkidle');
+  await page.evaluate(() => document.fonts.ready);
 
   expect(remoteFontRequests).toEqual([]);
 });

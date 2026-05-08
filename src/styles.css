@@ -7,7 +7,7 @@
   --color-text: #162028;
   --color-muted: #5f6d74;
   --color-accent: #d4af37;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Playfair Display', 'Georgia', serif;
   --font-body: 'Manrope', 'Montserrat', sans-serif;
 }
 

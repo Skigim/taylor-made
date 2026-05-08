@@ -7,6 +7,7 @@ import '@fontsource/playfair-display/600.css';
 import '@fontsource/playfair-display/700.css';
 import './styles.css';
 import { siteContent } from './content/siteContent';
+import { escapeHtml } from './lib/html';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 const auditPanelCopy =
@@ -36,14 +37,14 @@ const splitBrandName = (brandName: string) => {
 const { brandWordmark, brandSuffix } = splitBrandName(siteContent.brand.name);
 
 const scopeItems = siteContent.auditScope
-  .map((item) => `<li class="scope-list__item">${item}</li>`)
+  .map((item) => `<li class="scope-list__item">${escapeHtml(item)}</li>`)
   .join('');
 
 const problemItems = siteContent.problem.points
   .map(
     (point, index) => `
       <li class="problem-list__item">
-        <span>${point}</span>
+        <span>${escapeHtml(point)}</span>
         <span class="problem-list__index">${String(index + 1).padStart(2, '0')}</span>
       </li>
     `
@@ -55,8 +56,8 @@ const capabilityItems = siteContent.capabilities
     ({ name, description }, index) => `
       <article class="capability-card">
         <p class="eyebrow capability-card__index">${String(index + 1).padStart(2, '0')}</p>
-        <h3>${name}</h3>
-        <p>${description}</p>
+        <h3>${escapeHtml(name)}</h3>
+        <p>${escapeHtml(description)}</p>
       </article>
     `
   )
@@ -67,8 +68,8 @@ const processSteps = siteContent.process
     ({ title, description }, index) => `
       <li class="process-step">
         <p class="eyebrow process-step__index">${String(index + 1).padStart(2, '0')}</p>
-        <h3 class="process-step__title">${title}</h3>
-        <p class="process-step__description">${description}</p>
+        <h3 class="process-step__title">${escapeHtml(title)}</h3>
+        <p class="process-step__description">${escapeHtml(description)}</p>
       </li>
     `
   )
@@ -93,11 +94,11 @@ app.innerHTML = `
     <section class="hero">
       <div class="hero__content">
         <p class="hero__brand">
-          <span class="hero__brand-mark">${brandWordmark}</span>
-          ${brandSuffix ? `<span class="hero__brand-suffix">${brandSuffix}</span>` : ''}
+          <span class="hero__brand-mark">${escapeHtml(brandWordmark)}</span>
+          ${brandSuffix ? `<span class="hero__brand-suffix">${escapeHtml(brandSuffix)}</span>` : ''}
         </p>
-        <h1>${siteContent.hero.title}</h1>
-        <p class="hero__description">${siteContent.hero.description}</p>
+        <h1>${escapeHtml(siteContent.hero.title)}</h1>
+        <p class="hero__description">${escapeHtml(siteContent.hero.description)}</p>
         <div class="hero__actions">
           <button
             class="button button--primary"
@@ -105,9 +106,9 @@ app.innerHTML = `
             aria-controls="audit-overview"
             data-action="focus-audit-overview"
           >
-            ${siteContent.hero.primaryCta}
+            ${escapeHtml(siteContent.hero.primaryCta)}
           </button>
-          <span class="hero__note">${siteContent.hero.secondaryNote}</span>
+          <span class="hero__note">${escapeHtml(siteContent.hero.secondaryNote)}</span>
         </div>
       </div>
       <aside
@@ -116,8 +117,8 @@ app.innerHTML = `
         aria-label="Audit overview"
       >
         <h2 class="hero__panel-title" tabindex="-1">Audit overview</h2>
-        <p class="hero__panel-kicker">${siteContent.brand.audience}</p>
-        <p class="hero__panel-copy">${auditPanelCopy}</p>
+        <p class="hero__panel-kicker">${escapeHtml(siteContent.brand.audience)}</p>
+        <p class="hero__panel-copy">${escapeHtml(auditPanelCopy)}</p>
       </aside>
     </section>
 
@@ -134,7 +135,7 @@ app.innerHTML = `
     <section class="section section--split" aria-labelledby="problem-title">
       <div class="section__content-block">
         <p class="eyebrow">The problem</p>
-        <h2 id="problem-title">${siteContent.problem.title}</h2>
+        <h2 id="problem-title">${escapeHtml(siteContent.problem.title)}</h2>
       </div>
       <ol class="problem-list">
         ${problemItems}
@@ -162,15 +163,15 @@ app.innerHTML = `
     </section>
 
     <section class="section section--cta" aria-labelledby="closing-cta-title">
-      <h2 id="closing-cta-title">${siteContent.closingCta.title}</h2>
-      <p class="cta-section__description">${siteContent.closingCta.description}</p>
+      <h2 id="closing-cta-title">${escapeHtml(siteContent.closingCta.title)}</h2>
+      <p class="cta-section__description">${escapeHtml(siteContent.closingCta.description)}</p>
       <button
         class="button button--primary"
         type="button"
         aria-controls="audit-overview"
         data-action="focus-audit-overview"
       >
-        ${siteContent.closingCta.cta}
+        ${escapeHtml(siteContent.closingCta.cta)}
       </button>
     </section>
   </main>
