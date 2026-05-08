@@ -1,32 +1,31 @@
 # Superpowers for GitHub Copilot
 
-This repository uses the [Superpowers](https://github.com/obra/superpowers) skills framework, vendored in the `skills/` directory. Skills are structured process guides that shape how you approach tasks — mandatory workflows, not suggestions.
+This repository uses the [Superpowers](https://github.com/obra/superpowers) skills framework, vendored in the `.github/skills/` directory. Skills are structured process guides that shape how you approach tasks — mandatory workflows, not suggestions.
 
 ## How to Access Skills
 
-Skills are in the `skills/` directory. Each skill is a `SKILL.md` file in its subdirectory.
+Skills are in the `.github/skills/` directory. Each skill is a `SKILL.md` file in its subdirectory.
 
 - **Use the `skill` tool** (if available in your environment) to invoke skills by name.
-- **Otherwise, use `view`** to read `skills/<skill-name>/SKILL.md` directly.
+- **Otherwise, use `view`** to read `.github/skills/<skill-name>/SKILL.md` directly.
 
 ## Available Skills
 
 | Skill | Location | Use When |
 |-------|----------|----------|
-| `using-superpowers` | `skills/using-superpowers/SKILL.md` | Starting any conversation — read this first |
-| `brainstorming` | `skills/brainstorming/SKILL.md` | Before any feature/creative work |
-| `writing-plans` | `skills/writing-plans/SKILL.md` | After design approval, before touching code |
-| `executing-plans` | `skills/executing-plans/SKILL.md` | When you have a plan to implement |
-| `subagent-driven-development` | `skills/subagent-driven-development/SKILL.md` | When executing plans via subagents |
-| `test-driven-development` | `skills/test-driven-development/SKILL.md` | When implementing any feature or bugfix |
-| `systematic-debugging` | `skills/systematic-debugging/SKILL.md` | When encountering any bug or unexpected behavior |
-| `verification-before-completion` | `skills/verification-before-completion/SKILL.md` | Before claiming work is complete |
-| `requesting-code-review` | `skills/requesting-code-review/SKILL.md` | After completing tasks or features |
-| `receiving-code-review` | `skills/receiving-code-review/SKILL.md` | When receiving code review feedback |
-| `finishing-a-development-branch` | `skills/finishing-a-development-branch/SKILL.md` | When implementation is complete |
-| `using-git-worktrees` | `skills/using-git-worktrees/SKILL.md` | Before starting feature work |
-| `dispatching-parallel-agents` | `skills/dispatching-parallel-agents/SKILL.md` | When facing 2+ independent tasks |
-| `writing-skills` | `skills/writing-skills/SKILL.md` | When creating or editing skills |
+| `using-superpowers` | `.github/skills/using-superpowers/SKILL.md` | Starting any conversation — read this first |
+| `brainstorming` | `.github/skills/brainstorming/SKILL.md` | Before any feature/creative work |
+| `writing-plans` | `.github/skills/writing-plans/SKILL.md` | After design approval, before touching code |
+| `executing-plans` | `.github/skills/executing-plans/SKILL.md` | When you have a plan to implement |
+| `subagent-driven-development` | `.github/skills/subagent-driven-development/SKILL.md` | When executing plans via subagents |
+| `test-driven-development` | `.github/skills/test-driven-development/SKILL.md` | When implementing any feature or bugfix |
+| `systematic-debugging` | `.github/skills/systematic-debugging/SKILL.md` | When encountering any bug or unexpected behavior |
+| `verification-before-completion` | `.github/skills/verification-before-completion/SKILL.md` | Before claiming work is complete |
+| `requesting-code-review` | `.github/skills/requesting-code-review/SKILL.md` | After completing tasks or features |
+| `receiving-code-review` | `.github/skills/receiving-code-review/SKILL.md` | When receiving code review feedback |
+| `finishing-a-development-branch` | `.github/skills/finishing-a-development-branch/SKILL.md` | When implementation is complete |
+| `dispatching-parallel-agents` | `.github/skills/dispatching-parallel-agents/SKILL.md` | When facing 2+ independent tasks |
+| `writing-skills` | `.github/skills/writing-skills/SKILL.md` | When creating or editing skills |
 
 ## Tool Mapping for GitHub Copilot
 
@@ -58,6 +57,8 @@ Skills use Claude Code tool names. Use these Copilot equivalents:
 ### When to Use Skills
 
 **Invoke the relevant skill BEFORE any response or action.** Even a 1% chance a skill might apply means you should check it.
+
+Use standard git branching in the current workspace by default. Do not create or switch to git worktrees unless the user explicitly asks for a worktree-based workflow.
 
 **Before starting any feature work** → read `brainstorming` skill  
 **Before writing any code** → read `writing-plans` skill (after design) + `test-driven-development` skill  
@@ -94,4 +95,4 @@ When multiple skills could apply:
 
 ---
 
-*Skills vendored from [obra/superpowers](https://github.com/obra/superpowers) (MIT License). See `skills/using-superpowers/SKILL.md` for full introduction.*
+*Skills vendored from [obra/superpowers](https://github.com/obra/superpowers) (MIT License). See `.github/skills/using-superpowers/SKILL.md` for full introduction.*
