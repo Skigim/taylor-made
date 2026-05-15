@@ -6,6 +6,7 @@ import '@fontsource/playfair-display/400.css';
 import '@fontsource/playfair-display/600.css';
 import '@fontsource/playfair-display/700.css';
 import './styles.css';
+import monogramUrl from './assets/tm-monogram.svg';
 import { siteContent } from './content/siteContent';
 import { escapeHtml } from './lib/html';
 
@@ -36,8 +37,8 @@ const splitBrandName = (brandName: string) => {
 
 const { brandWordmark, brandSuffix } = splitBrandName(siteContent.brand.name);
 
-const scopeItems = siteContent.auditScope
-  .map((item) => `<li class="scope-list__item">${escapeHtml(item)}</li>`)
+const capabilityKeywords = siteContent.auditScope
+  .map((item) => `<li class="capability-keyword">${escapeHtml(item)}</li>`)
   .join('');
 
 const problemItems = siteContent.problem.points
@@ -116,30 +117,19 @@ app.innerHTML = `
         id="audit-overview"
         aria-label="Audit overview"
       >
+        <img class="hero__mark" src="${monogramUrl}" alt="" aria-hidden="true" />
         <h2 class="hero__panel-title" tabindex="-1">Audit overview</h2>
         <p class="hero__panel-kicker">${escapeHtml(siteContent.brand.audience)}</p>
         <p class="hero__panel-copy">${escapeHtml(auditPanelCopy)}</p>
+
+        <section class="hero__panel-section" aria-labelledby="problem-title">
+          <p class="eyebrow">The problem</p>
+          <h3 class="hero__panel-section-title" id="problem-title">${escapeHtml(siteContent.problem.title)}</h3>
+          <ol class="problem-list problem-list--panel">
+            ${problemItems}
+          </ol>
+        </section>
       </aside>
-    </section>
-
-    <section class="section section--paper" aria-labelledby="audit-scope-title">
-      <div class="section__intro">
-        <p class="eyebrow">Audit scope</p>
-        <h2 id="audit-scope-title">What the review covers</h2>
-      </div>
-      <ul class="scope-list">
-        ${scopeItems}
-      </ul>
-    </section>
-
-    <section class="section section--split" aria-labelledby="problem-title">
-      <div class="section__content-block">
-        <p class="eyebrow">The problem</p>
-        <h2 id="problem-title">${escapeHtml(siteContent.problem.title)}</h2>
-      </div>
-      <ol class="problem-list">
-        ${problemItems}
-      </ol>
     </section>
 
     <section class="section section--paper" aria-labelledby="capabilities-title">
@@ -147,6 +137,9 @@ app.innerHTML = `
         <p class="eyebrow">Capabilities</p>
         <h2 id="capabilities-title">What TaylorMade builds and improves</h2>
       </div>
+      <ul class="capability-keywords" aria-label="What TaylorMade builds keywords">
+        ${capabilityKeywords}
+      </ul>
       <div class="capability-grid">
         ${capabilityItems}
       </div>

@@ -3,7 +3,7 @@ import type { LandingPageContent } from '../types/content';
 export const siteContent: LandingPageContent = {
   brand: {
     name: 'TaylorMade LLC',
-    audience: 'Salon and barber focus',
+    audience: 'Appointment-based focus',
   },
   hero: {
     title: 'Modern infrastructure for service businesses that deserve better systems.',
@@ -42,25 +42,20 @@ export const siteContent: LandingPageContent = {
         'A free review of your current presence, booking flow, and day-to-day operations — no pressure, no pitch.',
     },
     {
-      title: 'Plan',
+      title: 'Prioritize',
       description:
-        'A plain-English roadmap showing exactly what to fix first and why, based on your actual shop.',
+        'A plain-English order of improvements so you know what to fix first and why.',
     },
     {
       title: 'Build',
       description:
-        'We implement the changes for you — site, booking, billing, reminders, and everything in between.',
-    },
-    {
-      title: 'Support',
-      description:
-        'Ongoing check-ins so your systems keep working as your business grows.',
+        'TaylorMade implements the right-fit infrastructure across presence, operations, and retention.',
     },
   ],
   closingCta: {
-    title: 'Ready to stop patching and start building?',
+    title: 'Get a free systems audit',
     description:
-      'The audit is free, the roadmap is yours to keep, and there is no obligation. Most shops see the first win within two weeks.',
-    cta: 'Book your free audit',
+      'A free business systems audit for salons and barbers who are tired of piecing together websites, booking tools, payments, and follow-up by hand.',
+    cta: 'Get a free systems audit',
   },
 };

@@ -30,8 +30,12 @@ test('homepage uses bundled hero fonts without remote requests', async ({ page }
 test('homepage shows the approved hero content', async ({ page }) => {
   await page.goto('/');
 
+  const heroSection = page.locator('section.hero');
+  const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
+  const monogram = auditOverview.locator('.hero__mark');
+
   await expect(page.getByText('TaylorMade LLC')).toBeVisible();
-  await expect(page.getByText('Salon and barber focus')).toBeVisible();
+  await expect(page.getByText('Appointment-based focus')).toBeVisible();
 
   await expect(
     page.getByRole('heading', {
@@ -47,22 +51,36 @@ test('homepage shows the approved hero content', async ({ page }) => {
 
   await expect(page.getByText(/appointment-based local businesses/i)).toBeVisible();
 
-  const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
+  const primaryCta = heroSection.getByRole('button', { name: /get a free systems audit/i });
   await expect(primaryCta).toBeVisible();
+  await expect(auditOverview.getByRole('img')).toHaveCount(0);
+  await expect(monogram).toBeVisible();
+  await expect
+    .poll(() => monogram.evaluate((img) => (img as HTMLImageElement).naturalWidth))
+    .toBeGreaterThan(0);
 });
 
 test('homepage explains the audit scope and service capabilities', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByText(/online presence/i)).toBeVisible();
-  await expect(page.getByText(/scheduling flow/i)).toBeVisible();
-  await expect(page.getByText(/payments and operations/i)).toBeVisible();
+  const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
+  const capabilitiesSection = page.locator('section[aria-labelledby="capabilities-title"]');
 
+  await expect(auditOverview.getByRole('heading', { name: /what the review covers/i })).toHaveCount(0);
+  await expect(page.locator('main > section[aria-labelledby="audit-scope-title"]')).toHaveCount(0);
+
+  await expect(auditOverview.getByText(/the problem/i)).toBeVisible();
   await expect(
-    page.getByRole('heading', {
+    auditOverview.getByRole('heading', {
       name: /most local shops are running real businesses on a stack of disconnected fixes/i,
     })
   ).toBeVisible();
+
+  await expect(page.locator('main > section[aria-labelledby="problem-title"]')).toHaveCount(0);
+
+  await expect(capabilitiesSection.getByText(/online presence/i)).toBeVisible();
+  await expect(capabilitiesSection.getByText(/scheduling flow/i)).toBeVisible();
+  await expect(capabilitiesSection.getByText(/payments and operations/i)).toBeVisible();
 
   await expect(page.getByText(/^presence$/i)).toBeVisible();
   await expect(page.getByText(/^operations$/i)).toBeVisible();
@@ -72,7 +90,9 @@ test('homepage explains the audit scope and service capabilities', async ({ page
 test('hero CTA focuses the audit overview without desktop scroll jumps', async ({ page }) => {
   await page.goto('/');
 
-  const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
+  const primaryCta = page.locator('section.hero').getByRole('button', {
+    name: /get a free systems audit/i,
+  });
   const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
   const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
   const viewportHeight = page.viewportSize()?.height ?? 0;
@@ -99,7 +119,9 @@ test('hero CTA scrolls the audit overview into view on narrow screens before foc
   await page.setViewportSize({ width: 640, height: 540 });
   await page.goto('/');
 
-  const primaryCta = page.getByRole('button', { name: /get a free systems audit/i });
+  const primaryCta = page.locator('section.hero').getByRole('button', {
+    name: /get a free systems audit/i,
+  });
   const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
   const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
   const viewportHeight = page.viewportSize()?.height ?? 0;
@@ -128,10 +150,13 @@ test('homepage shows the process section with numbered steps', async ({ page }) 
     processSection.getByRole('heading', { name: /how it works/i })
   ).toBeVisible();
 
-  await expect(processSection.getByRole('heading', { name: /^audit$/i })).toBeVisible();
-  await expect(processSection.getByRole('heading', { name: /^plan$/i })).toBeVisible();
-  await expect(processSection.getByRole('heading', { name: /^build$/i })).toBeVisible();
-  await expect(processSection.getByRole('heading', { name: /^support$/i })).toBeVisible();
+  await expect(processSection.locator('.process-step')).toHaveCount(3);
+  await expect(processSection.locator('.process-step__title')).toHaveText([
+    'Audit',
+    'Prioritize',
+    'Build',
+  ]);
+  await expect(processSection.getByRole('heading', { name: /^support$/i })).toHaveCount(0);
 });
 
 test('homepage shows a closing CTA section', async ({ page }) => {
@@ -140,12 +165,18 @@ test('homepage shows a closing CTA section', async ({ page }) => {
   const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
 
   await expect(
-    ctaSection.getByRole('heading', { name: /ready to stop patching and start building/i })
+    ctaSection.getByRole('heading', { name: /^get a free systems audit$/i })
   ).toBeVisible();
 
-  await expect(ctaSection.getByText(/the audit is free/i)).toBeVisible();
+  await expect(
+    ctaSection.getByText(
+      /a free business systems audit for salons and barbers who are tired of piecing together websites, booking tools, payments, and follow-up by hand/i
+    )
+  ).toBeVisible();
 
-  const closingCtaButton = ctaSection.getByRole('button', { name: /book your free audit/i });
+  const closingCtaButton = ctaSection.getByRole('button', {
+    name: /^get a free systems audit$/i,
+  });
   await expect(closingCtaButton).toBeVisible();
 });
 
@@ -153,7 +184,9 @@ test('closing CTA focuses the audit overview heading', async ({ page }) => {
   await page.goto('/');
 
   const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
-  const closingCtaButton = ctaSection.getByRole('button', { name: /book your free audit/i });
+  const closingCtaButton = ctaSection.getByRole('button', {
+    name: /^get a free systems audit$/i,
+  });
   const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
 
   await closingCtaButton.click();
