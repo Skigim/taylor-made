@@ -2,11 +2,11 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 // Mock modules before any imports that reference them
-vi.mock('./_db', () => ({ sql: vi.fn() }));
+vi.mock('./_db.js', () => ({ sql: vi.fn() }));
 vi.mock('resend', () => ({ Resend: vi.fn() }));
 
 import handler from './audit';
-import { sql } from './_db';
+import { sql } from './_db.js';
 import { Resend } from 'resend';
 
 // Declared at describe scope so individual tests can override per-test

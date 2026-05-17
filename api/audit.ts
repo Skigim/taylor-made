@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
-import { sql } from './_db';
+import { sql } from './_db.js';
 import type { AuditFormData } from '../src/types/content';
 
 const REQUIRED_ENV = ['DATABASE_URL', 'RESEND_API_KEY', 'NOTIFY_EMAIL', 'FROM_EMAIL'] as const;
