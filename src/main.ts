@@ -7,6 +7,8 @@ import '@fontsource/playfair-display/600.css';
 import '@fontsource/playfair-display/700.css';
 import './styles.css';
 import monogramUrl from './assets/tm-monogram.svg';
+import { createAuditForm } from './components/auditForm';
+import { createAuditModal } from './components/auditModal';
 import { siteContent } from './content/siteContent';
 import { escapeHtml } from './lib/html';
 
@@ -76,20 +78,6 @@ const processSteps = siteContent.process
   )
   .join('');
 
-const isMeaningfullyVisible = (element: HTMLElement) => {
-  const rect = element.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-  const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
-  const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
-
-  if (visibleHeight <= 0 || visibleWidth <= 0) {
-    return false;
-  }
-
-  return visibleHeight >= rect.height * 0.6;
-};
-
 app.innerHTML = `
   <main class="page-shell">
     <section class="hero">
@@ -104,8 +92,9 @@ app.innerHTML = `
           <button
             class="button button--primary"
             type="button"
-            aria-controls="audit-overview"
-            data-action="focus-audit-overview"
+            aria-haspopup="dialog"
+            aria-controls="audit-modal"
+            data-action="open-audit-modal"
           >
             ${escapeHtml(siteContent.hero.primaryCta)}
           </button>
@@ -161,8 +150,9 @@ app.innerHTML = `
       <button
         class="button button--primary"
         type="button"
-        aria-controls="audit-overview"
-        data-action="focus-audit-overview"
+        aria-haspopup="dialog"
+        aria-controls="audit-modal"
+        data-action="open-audit-modal"
       >
         ${escapeHtml(siteContent.closingCta.cta)}
       </button>
@@ -170,24 +160,16 @@ app.innerHTML = `
   </main>
 `;
 
-const auditCtaButtons = app.querySelectorAll<HTMLButtonElement>('[data-action="focus-audit-overview"]');
-const auditOverview = app.querySelector<HTMLElement>('#audit-overview');
-const auditOverviewHeading = app.querySelector<HTMLHeadingElement>('.hero__panel-title');
+const auditCtaButtons = app.querySelectorAll<HTMLButtonElement>('[data-action="open-audit-modal"]');
 
-if (!auditCtaButtons.length || !auditOverview || !auditOverviewHeading) {
-  throw new Error('Missing CTA buttons or audit overview panel focus target');
+if (!auditCtaButtons.length) {
+  throw new Error('Missing audit CTA buttons');
 }
 
-const handleAuditCtaClick = () => {
-  const shouldScrollIntoView = !isMeaningfullyVisible(auditOverview);
+const auditModal = createAuditModal((onClose) => createAuditForm(onClose));
 
-  if (shouldScrollIntoView) {
-    auditOverview.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    auditOverviewHeading.focus();
-    return;
-  }
+document.body.append(auditModal.element);
 
-  auditOverviewHeading.focus({ preventScroll: true });
-};
-
-auditCtaButtons.forEach((btn) => btn.addEventListener('click', handleAuditCtaClick));
+auditCtaButtons.forEach((button) =>
+  button.addEventListener('click', () => auditModal.open(button))
+);

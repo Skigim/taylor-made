@@ -40,3 +40,19 @@ export interface LandingPageContent {
   process: ProcessStep[];
   closingCta: ClosingCta;
 }
+
+export type BusinessType = 'Salon' | 'Barber Shop' | 'Other';
+export type TeamSize = 'Just me' | '2–5' | '6–10' | '10+';
+export type ReferralSource = 'Google' | 'Referral' | 'Social media' | 'Other';
+
+export interface AuditFormData {
+  fullName: string;
+  email: string;
+  businessName: string;
+  businessType: BusinessType;
+  phone: string;
+  city: string;
+  painPoints?: string;
+  teamSize?: TeamSize;
+  referralSource?: ReferralSource;
+}

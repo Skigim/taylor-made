@@ -2,8 +2,6 @@ import { expect, test } from '@playwright/test';
 
 import { isRemoteGoogleFontRequest } from '../src/lib/html';
 
-const MAX_DESKTOP_SCROLL_DRIFT = 24;
-
 test('homepage uses bundled hero fonts without remote requests', async ({ page }) => {
   const remoteFontRequests: string[] = [];
 
@@ -87,58 +85,35 @@ test('homepage explains the audit scope and service capabilities', async ({ page
   await expect(page.getByText(/^retention$/i)).toBeVisible();
 });
 
-test('hero CTA focuses the audit overview without desktop scroll jumps', async ({ page }) => {
+test('hero CTA opens the audit modal', async ({ page }) => {
   await page.goto('/');
+
+  const modal = page.locator('#audit-modal');
+  await expect(modal).toBeHidden();
 
   const primaryCta = page.locator('section.hero').getByRole('button', {
     name: /get a free systems audit/i,
   });
-  const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
-  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
-  const viewportHeight = page.viewportSize()?.height ?? 0;
-  const panelBefore = await auditOverview.boundingBox();
-  const scrollBefore = await page.evaluate(() => window.scrollY);
-
-  expect(panelBefore).not.toBeNull();
 
   await primaryCta.click();
 
-  await expect(auditOverviewHeading).toBeFocused();
-
-  if (!panelBefore) {
-    throw new Error('Expected audit overview panel bounding box');
-  }
-
-  expect(panelBefore.y).toBeLessThan(viewportHeight);
-  await expect
-    .poll(async () => Math.abs((await page.evaluate(() => window.scrollY)) - scrollBefore))
-    .toBeLessThanOrEqual(MAX_DESKTOP_SCROLL_DRIFT);
+  await expect(modal).toBeVisible();
 });
 
-test('hero CTA scrolls the audit overview into view on narrow screens before focusing it', async ({ page }) => {
+test('hero CTA opens the audit modal on narrow screens', async ({ page }) => {
   await page.setViewportSize({ width: 640, height: 540 });
   await page.goto('/');
 
+  const modal = page.locator('#audit-modal');
+  await expect(modal).toBeHidden();
+
   const primaryCta = page.locator('section.hero').getByRole('button', {
     name: /get a free systems audit/i,
   });
-  const auditOverview = page.getByRole('complementary', { name: /audit overview/i });
-  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
-  const viewportHeight = page.viewportSize()?.height ?? 0;
-  const panelBefore = await auditOverview.boundingBox();
-
-  expect(panelBefore).not.toBeNull();
-
-  if (!panelBefore) {
-    throw new Error('Expected audit overview panel bounding box');
-  }
-
-  expect(panelBefore.y).toBeGreaterThanOrEqual(viewportHeight);
 
   await primaryCta.click();
 
-  await expect(auditOverviewHeading).toBeFocused();
-  await expect(auditOverview).toBeInViewport();
+  await expect(modal).toBeVisible();
 });
 
 test('homepage shows the process section with numbered steps', async ({ page }) => {
@@ -163,6 +138,7 @@ test('homepage shows a closing CTA section', async ({ page }) => {
   await page.goto('/');
 
   const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
+  const modal = page.locator('#audit-modal');
 
   await expect(
     ctaSection.getByRole('heading', { name: /^get a free systems audit$/i })
@@ -178,20 +154,9 @@ test('homepage shows a closing CTA section', async ({ page }) => {
     name: /^get a free systems audit$/i,
   });
   await expect(closingCtaButton).toBeVisible();
-});
-
-test('closing CTA focuses the audit overview heading', async ({ page }) => {
-  await page.goto('/');
-
-  const ctaSection = page.locator('section[aria-labelledby="closing-cta-title"]');
-  const closingCtaButton = ctaSection.getByRole('button', {
-    name: /^get a free systems audit$/i,
-  });
-  const auditOverviewHeading = page.getByRole('heading', { name: /audit overview/i });
 
   await closingCtaButton.click();
-
-  await expect(auditOverviewHeading).toBeFocused();
+  await expect(modal).toBeVisible();
 });
 
 test('homepage collapses the hero to a single column on narrow screens', async ({ page }) => {
